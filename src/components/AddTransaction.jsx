@@ -31,36 +31,45 @@ const AddTransaction = () => {
   }
 
   return (
-    <div className="card">
-      <h3>Add New Transaction</h3>
-      <form onSubmit={onSubmit}>
-        <div className="form-control">
-          <label htmlFor="text" className="form-label">
+    <div  id="add-transaction" className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8 ">
+      <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 text-center">
+        Add New Transaction
+      </h3>
+      <form onSubmit={onSubmit} className="space-y-5">
+        
+        {/* Text */}
+        <div>
+          <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">
             Text
           </label>
           <input
             type="text"
             value={text}
             onChange={e => setText(e.target.value)}
-            placeholder="Enter text..."
+            placeholder="e.g., Salary, Groceries..."
             required
+            className="w-full px-4 py-2.5 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white transition"
           />
         </div>
-        <div className="form-control">
-          <label htmlFor="type" className="form-label">
+
+        {/* Type */}
+        <div>
+          <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">
             Type
           </label>
           <select
             value={type}
             onChange={e => setType(e.target.value)}
-            className="form-control"
+            className="w-full px-4 py-2.5 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white transition"
           >
             <option value="income">Income</option>
             <option value="expense">Expense</option>
           </select>
         </div>
-        <div className="form-control">
-          <label htmlFor="amount" className="form-label">
+
+        {/* Amount */}
+        <div>
+          <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">
             Amount
           </label>
           <input
@@ -71,21 +80,27 @@ const AddTransaction = () => {
             min="0"
             step="0.01"
             required
+            className="w-full px-4 py-2.5 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white transition"
           />
         </div>
-        <div className="form-control">
-          <label htmlFor="category" className="form-label">
+
+        {/* Category */}
+        <div>
+          <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">
             Category (optional)
           </label>
           <input
             type="text"
             value={category}
             onChange={e => setCategory(e.target.value)}
-            placeholder="Enter category..."
+            placeholder="e.g., Food, Rent, Utilities"
+            className="w-full px-4 py-2.5 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white transition"
           />
         </div>
-        <div className="form-control">
-          <label htmlFor="date" className="form-label">
+
+        {/* Date */}
+        <div>
+          <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">
             Date
           </label>
           <input
@@ -93,9 +108,15 @@ const AddTransaction = () => {
             value={date}
             onChange={e => setDate(e.target.value)}
             required
+            className="w-full px-4 py-2.5 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white transition"
           />
         </div>
-        <button className="btn btn-primary" style={{ marginTop: '10px' }}>
+
+        {/* Submit Button */}
+        <button
+          type="submit"
+          className="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition-colors focus:outline-none focus:ring-4 focus:ring-blue-300"
+        >
           Add Transaction
         </button>
       </form>

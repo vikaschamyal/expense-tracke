@@ -3,16 +3,24 @@ import { GlobalContext } from '../context/GlobalContext'
 
 const IncomeExpenses = () => {
   const { income, expense } = useContext(GlobalContext)
+
   return (
-    <div className="card">
-      <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-        <div>
-          <h4>Income</h4>
-          <p className="money plus">+${income}</p>
+    <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6">
+      <div className="flex justify-between text-center">
+        {/* Income */}
+        <div className="flex-1 border-r border-gray-300 dark:border-gray-700">
+          <h4 className="text-gray-500 dark:text-gray-400 text-sm uppercase tracking-wide">
+            Income
+          </h4>
+          <p className="text-lg font-semibold text-green-500"> ₹ : {income}</p>
         </div>
-        <div>
-          <h4>Expense</h4>
-          <p className="money minus">-${expense}</p>
+
+        {/* Expense */}
+        <div className="flex-1">
+          <h4 className="text-gray-500 dark:text-gray-400 text-sm uppercase tracking-wide">
+            Expense
+          </h4>
+          <p className="text-lg font-semibold text-red-500"> ₹ :  {expense}</p>
         </div>
       </div>
     </div>

@@ -16,27 +16,15 @@ const ExpenseChart = () => {
       {
         data: Object.values(expenseCategories),
         backgroundColor: [
-          '#FF6384',
-          '#36A2EB',
-          '#FFCE56',
-          '#4BC0C0',
-          '#9966FF',
-          '#FF9F40',
-          '#8AC24A',
-          '#F06292',
-          '#7986CB'
+          '#EF4444', '#3B82F6', '#F59E0B', '#10B981',
+          '#8B5CF6', '#F43F5E', '#22D3EE', '#A78BFA', '#F97316'
         ],
         hoverBackgroundColor: [
-          '#FF6384',
-          '#36A2EB',
-          '#FFCE56',
-          '#4BC0C0',
-          '#9966FF',
-          '#FF9F40',
-          '#8AC24A',
-          '#F06292',
-          '#7986CB'
-        ]
+          '#B91C1C', '#1E40AF', '#78350F', '#047857',
+          '#6D28D9', '#BE123C', '#0E7490', '#6D28D9', '#C2410C'
+        ],
+        borderWidth: 1,
+        borderColor: '#fff'
       }
     ]
   }
@@ -44,16 +32,23 @@ const ExpenseChart = () => {
   const options = {
     plugins: {
       legend: {
-        position: 'right'
+        position: 'right',
+        labels: {
+          color: '#374151', // Tailwind gray-700
+          font: { size: 14, weight: '600' }
+        }
       }
     },
-    maintainAspectRatio: false
+    maintainAspectRatio: false,
+    responsive: true,
   }
 
   return (
-    <div className="card">
-      <h3>Expense Breakdown</h3>
-      <div className="chart-container">
+    <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 max-w-xl mx-auto">
+      <h3 className="text-2xl font-semibold text-gray-900 dark:text-white mb-6 text-center">
+        Expense Breakdown
+      </h3>
+      <div className="h-64 md:h-80">
         <Pie data={data} options={options} />
       </div>
     </div>

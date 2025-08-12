@@ -64,7 +64,7 @@ export const GlobalProvider = ({ children }) => {
     return textMatch && categoryMatch && typeMatch && dateMatch
   })
 
-  // Calculate totals
+  // Calculate totals from filtered transactions
   const amounts = filteredTransactions.map(transaction => transaction.amount)
   const income = amounts
     .filter(item => item > 0)
@@ -75,7 +75,7 @@ export const GlobalProvider = ({ children }) => {
   ).toFixed(2)
   const balance = amounts.reduce((acc, item) => (acc += item), 0).toFixed(2)
 
-  // Get categories for pie chart
+  // Expense categories for pie chart
   const expenseCategories = filteredTransactions
     .filter(t => t.amount < 0)
     .reduce((acc, transaction) => {
@@ -87,6 +87,16 @@ export const GlobalProvider = ({ children }) => {
       return acc
     }, {})
 
+  // New: Detect salary transaction (case-insensitive "salary")
+  const salaryTransaction = state.transactions.find(t => 
+    t.text.toLowerCase().includes('salary') && t.amount > 0
+  )
+  const salaryAmount = salaryTransaction ? salaryTransaction.amount : 0
+
+  // Calculate savings and investments as 10% of salary
+  const savings = +(salaryAmount * 0.10).toFixed(2)
+  const investments = +(salaryAmount * 0.10).toFixed(2)
+
   return (
     <GlobalContext.Provider
       value={{
@@ -96,6 +106,8 @@ export const GlobalProvider = ({ children }) => {
         income,
         expense,
         expenseCategories,
+        savings,
+        investments,
         filters: state.filters,
         deleteTransaction,
         addTransaction,

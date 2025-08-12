@@ -15,120 +15,117 @@ const FilterBar = () => {
   }
 
   return (
-    <div className="card">
-      <div className="filter-bar">
-        <div style={{ position: 'relative', flex: 1 }}>
-          <FaSearch style={{
-            position: 'absolute',
-            left: '10px',
-            top: '50%',
-            transform: 'translateY(-50%)',
-            color: '#777'
-          }} />
+    <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 max-w-4xl mx-auto space-y-5">
+      {/* Top Row */}
+      <div className="flex flex-wrap gap-3 items-center">
+        {/* Search Box */}
+        <div className="relative flex-1 min-w-[200px]">
+          <FaSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500" />
           <input
             type="text"
             name="text"
             value={filters.text}
             onChange={handleChange}
             placeholder="Search transactions..."
-            className="form-control"
-            style={{ paddingLeft: '35px' }}
+            className="w-full pl-10 pr-3 py-2 rounded-lg border border-gray-300 dark:border-gray-600 focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
           />
         </div>
 
+        {/* Toggle Advanced Filters */}
         <button
           type="button"
-          className="btn btn-secondary"
           onClick={() => setShowAdvanced(!showAdvanced)}
+          className="flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white transition duration-200"
         >
           <FaFilter /> {showAdvanced ? 'Hide Filters' : 'More Filters'}
         </button>
 
+        {/* Clear Button */}
         {Object.keys(filters).some(key => filters[key] && key !== 'text') && (
           <button
             type="button"
-            className="btn btn-danger"
             onClick={clearFilters}
+            className="flex items-center gap-2 px-4 py-2 rounded-lg bg-red-600 hover:bg-red-700 text-white transition duration-200"
           >
             <FaTimes /> Clear
           </button>
         )}
       </div>
 
+      {/* Advanced Filters */}
       {showAdvanced && (
-        <div style={{ marginTop: '15px' }}>
-          <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
-            <div className="form-control" style={{ flex: 1 }}>
-              <label className="form-label">Category</label>
-              <select
-                name="category"
-                value={filters.category}
-                onChange={handleChange}
-                className="form-control"
-              >
-                <option value="all">All Categories</option>
-                {categories.map(category => (
-                  <option key={category} value={category}>
-                    {category}
-                  </option>
-                ))}
-              </select>
-            </div>
+        <div className="grid md:grid-cols-4 sm:grid-cols-2 grid-cols-1 gap-4">
+          {/* Category */}
+          <div>
+            <label className="block text-gray-700 dark:text-gray-300 font-semibold mb-1">Category</label>
+            <select
+              name="category"
+              value={filters.category}
+              onChange={handleChange}
+              className="w-full p-2 rounded-lg border border-gray-300 dark:border-gray-600 focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
+            >
+              <option value="all">All Categories</option>
+              {categories.map(category => (
+                <option key={category} value={category}>{category}</option>
+              ))}
+            </select>
+          </div>
 
-            <div className="form-control" style={{ flex: 1 }}>
-              <label className="form-label">Type</label>
-              <select
-                name="type"
-                value={filters.type}
-                onChange={handleChange}
-                className="form-control"
-              >
-                <option value="all">All Types</option>
-                {types.map(type => (
-                  <option key={type} value={type}>
-                    {type.charAt(0).toUpperCase() + type.slice(1)}
-                  </option>
-                ))}
-              </select>
-            </div>
+          {/* Type */}
+          <div>
+            <label className="block text-gray-700 dark:text-gray-300 font-semibold mb-1">Type</label>
+            <select
+              name="type"
+              value={filters.type}
+              onChange={handleChange}
+              className="w-full p-2 rounded-lg border border-gray-300 dark:border-gray-600 focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
+            >
+              <option value="all">All Types</option>
+              {types.map(type => (
+                <option key={type} value={type}>{type.charAt(0).toUpperCase() + type.slice(1)}</option>
+              ))}
+            </select>
+          </div>
 
-            <div className="form-control" style={{ flex: 1 }}>
-              <label className="form-label">Start Date</label>
-              <input
-                type="date"
-                name="startDate"
-                value={filters.startDate || ''}
-                onChange={handleChange}
-                className="form-control"
-              />
-            </div>
+          {/* Start Date */}
+          <div>
+            <label className="block text-gray-700 dark:text-gray-300 font-semibold mb-1">Start Date</label>
+            <input
+              type="date"
+              name="startDate"
+              value={filters.startDate || ''}
+              onChange={handleChange}
+              className="w-full p-2 rounded-lg border border-gray-300 dark:border-gray-600 focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
+            />
+          </div>
 
-            <div className="form-control" style={{ flex: 1 }}>
-              <label className="form-label">End Date</label>
-              <input
-                type="date"
-                name="endDate"
-                value={filters.endDate || ''}
-                onChange={handleChange}
-                className="form-control"
-              />
-            </div>
+          {/* End Date */}
+          <div>
+            <label className="block text-gray-700 dark:text-gray-300 font-semibold mb-1">End Date</label>
+            <input
+              type="date"
+              name="endDate"
+              value={filters.endDate || ''}
+              onChange={handleChange}
+              className="w-full p-2 rounded-lg border border-gray-300 dark:border-gray-600 focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
+            />
           </div>
         </div>
       )}
 
-      <div className="export-buttons">
+      {/* Export Buttons */}
+      <div className="flex flex-wrap gap-4 justify-center md:justify-start">
         <button
           type="button"
-          className="btn btn-secondary"
           onClick={() => exportToCSV(allTransactions, 'transactions')}
+          className="px-5 py-2 rounded-lg bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-900 dark:text-white transition"
         >
           Export to CSV
         </button>
         <button
           type="button"
-          className="btn btn-secondary"
           onClick={() => exportToJSON(allTransactions, 'transactions')}
+          className="px-5 py-2 rounded-lg bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-900 dark:text-white transition"
         >
           Export to JSON
         </button>
