@@ -14,6 +14,9 @@ import Button from './components/ui/Button'
 import Card from './components/ui/Card'
 import Modal from './components/ui/Modal'
 
+
+import ChatBotWidget from './components/chatbot/ChatBotWidget'
+
 const TrackerPage = () => {
   const [darkMode, setDarkMode] = useState(false)
   const [isModalOpen, setIsModalOpen] = useState(false)
@@ -76,6 +79,8 @@ const TrackerPage = () => {
 
           {/* Footer */}
           <Footer />
+
+          <ChatBotWidget />
         </div>
       </div>
     </GlobalProvider>

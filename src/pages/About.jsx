@@ -37,7 +37,7 @@ function About() {
                   <li>View balance and spending patterns</li>
                   <li>Calculate loan EMIs for home, student, and vehicle loans</li>
                   <li>Filter and review transaction history</li>
-                  <li>Dark mode support</li>
+                  
                 </ul>
               </div>
 
