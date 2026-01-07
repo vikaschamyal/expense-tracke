@@ -2,6 +2,8 @@ import { div } from 'framer-motion/client'
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 
+import Header from './layout/Header'
+
 const faqData = [
   {
     question: 'What is CashoraOne?',
@@ -34,18 +36,22 @@ const FAQ = () => {
   const [activeIndex, setActiveIndex] = useState(null)
 
   return (
-    
-    <div className="max-w-3xl mx-auto px-4 py-10">
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 transition-colors duration-500">
+    <Header/>
+     
       
       {/* Header */}
-      <div className="mb-8">
+      <div className="max-w-4xl mx-auto px-4 py-8">
+
         <h1 className="text-2xl font-semibold text-gray-900 dark:text-white">
           Frequently Asked Questions
         </h1>
         <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
           Everything you need to know about using CashoraOne.
         </p>
-      </div>
+        <br />
+        <br />
+      
 
       {/* FAQ List */}
       <div className="space-y-6">
@@ -128,7 +134,9 @@ const FAQ = () => {
           ← Back to Dashboard
         </Link>
       </div>
+      </div>
     </div>
+  
   )
 }
 
