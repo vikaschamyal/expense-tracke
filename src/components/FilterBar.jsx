@@ -9,25 +9,26 @@ const FilterBar = () => {
 
   const categories = [...new Set(allTransactions.map(t => t.category).filter(Boolean))]
   const types = ['income', 'expense']
+  const userName = localStorage.getItem('userName') || 'Guest'
 
   const handleChange = e => {
     updateFilters({ [e.target.name]: e.target.value })
   }
 
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 max-w-4xl mx-auto space-y-5">
+    <div className="bg-white rounded-xl shadow-lg p-6 max-w-4xl mx-auto space-y-5">
       {/* Top Row */}
       <div className="flex flex-wrap gap-3 items-center">
         {/* Search Box */}
         <div className="relative flex-1 min-w-[200px]">
-          <FaSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500" />
+          <FaSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
           <input
             type="text"
             name="text"
             value={filters.text}
             onChange={handleChange}
             placeholder="Search transactions..."
-            className="w-full pl-10 pr-3 py-2 rounded-lg border border-gray-300 dark:border-gray-600 focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
+            className="w-full pl-10 pr-3 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500"
           />
         </div>
 
@@ -57,12 +58,12 @@ const FilterBar = () => {
         <div className="grid md:grid-cols-4 sm:grid-cols-2 grid-cols-1 gap-4">
           {/* Category */}
           <div>
-            <label className="block text-gray-700 dark:text-gray-300 font-semibold mb-1">Category</label>
+            <label className="block text-gray-700 font-semibold mb-1">Category</label>
             <select
               name="category"
               value={filters.category}
               onChange={handleChange}
-              className="w-full p-2 rounded-lg border border-gray-300 dark:border-gray-600 focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
+              className="w-full p-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500"
             >
               <option value="all">All Categories</option>
               {categories.map(category => (
@@ -73,12 +74,12 @@ const FilterBar = () => {
 
           {/* Type */}
           <div>
-            <label className="block text-gray-700 dark:text-gray-300 font-semibold mb-1">Type</label>
+            <label className="block text-gray-700 font-semibold mb-1">Type</label>
             <select
               name="type"
               value={filters.type}
               onChange={handleChange}
-              className="w-full p-2 rounded-lg border border-gray-300 dark:border-gray-600 focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
+              className="w-full p-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500"
             >
               <option value="all">All Types</option>
               {types.map(type => (
@@ -89,25 +90,25 @@ const FilterBar = () => {
 
           {/* Start Date */}
           <div>
-            <label className="block text-gray-700 dark:text-gray-300 font-semibold mb-1">Start Date</label>
+            <label className="block text-gray-700 font-semibold mb-1">Start Date</label>
             <input
               type="date"
               name="startDate"
               value={filters.startDate || ''}
               onChange={handleChange}
-              className="w-full p-2 rounded-lg border border-gray-300 dark:border-gray-600 focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
+              className="w-full p-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500"
             />
           </div>
 
           {/* End Date */}
           <div>
-            <label className="block text-gray-700 dark:text-gray-300 font-semibold mb-1">End Date</label>
+            <label className="block text-gray-700 font-semibold mb-1">End Date</label>
             <input
               type="date"
               name="endDate"
               value={filters.endDate || ''}
               onChange={handleChange}
-              className="w-full p-2 rounded-lg border border-gray-300 dark:border-gray-600 focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
+              className="w-full p-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500"
             />
           </div>
         </div>
@@ -117,15 +118,15 @@ const FilterBar = () => {
       <div className="flex flex-wrap gap-4 justify-center md:justify-start">
         <button
           type="button"
-          onClick={() => exportToCSV(allTransactions, 'transactions')}
-          className="px-5 py-2 rounded-lg bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-900 dark:text-white transition"
+          onClick={() => exportToCSV(allTransactions, { fileName: 'transactions', userName })}
+          className="px-5 py-2 rounded-lg bg-gray-200 hover:bg-gray-300 text-gray-900 transition"
         >
           Export to CSV
         </button>
         <button
           type="button"
-          onClick={() => exportToJSON(allTransactions, 'transactions')}
-          className="px-5 py-2 rounded-lg bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-900 dark:text-white transition"
+          onClick={() => exportToJSON(allTransactions, { fileName: 'transactions', userName })}
+          className="px-5 py-2 rounded-lg bg-gray-200 hover:bg-gray-300 text-gray-900 transition"
         >
           Export to JSON
         </button>

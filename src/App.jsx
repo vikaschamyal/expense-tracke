@@ -11,11 +11,14 @@ import About from './pages/About'
 import Profile from './pages/Profile'
 import Settings from './pages/Settings'
 
+import FAQ from './components/FAQ'
+
 function App() {
   return (
     <Router>
       <Routes>
         <Route path="/" element={<WelcomePage />} />
+        <Route path="/faq" element={<FAQ />} />
         <Route path="/setup" element={<ProfileSetup />} />
         <Route path="/onboarding-complete" element={<OnboardingComplete />} />
         <Route path="/tracker" element={<TrackerPage />} />
