@@ -12,13 +12,11 @@ import Footer from './components/Footer'
 import { useState, useEffect } from 'react'
 
 const TrackerPage = () => {
-  // Dark mode toggle
   const [darkMode, setDarkMode] = useState(false)
-  // Control modal for adding transactions
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const userName = localStorage.getItem('userName') || 'User'
 
   useEffect(() => {
-    // Apply dark class to <html> whenever darkMode changes
     document.documentElement.classList.toggle('dark', darkMode)
   }, [darkMode])
 
@@ -26,11 +24,14 @@ const TrackerPage = () => {
     <GlobalProvider>
       <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-500">
         <div className="max-w-7xl mx-auto px-6 py-8 space-y-8">
-
-          {/* Header with dark mode toggle */}
+          {/* Header */}
           <Header darkMode={darkMode} setDarkMode={setDarkMode} />
 
-          {/* Add Transaction Button */}
+          <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-2">
+            Welcome back, {userName} 
+          </h2>
+
+          {/* Add Transaction */}
           <div className="flex justify-end">
             <button
               onClick={() => setIsModalOpen(true)}
@@ -39,13 +40,9 @@ const TrackerPage = () => {
               + Add Transaction
             </button>
           </div>
+          {isModalOpen && <AddTransaction onClose={() => setIsModalOpen(false)} />}
 
-          {/* Modal */}
-          {isModalOpen && (
-            <AddTransaction onClose={() => setIsModalOpen(false)} />
-          )}
-
-          {/* Dashboard Cards - quick glance metrics */}
+          {/* Dashboard Cards */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 hover:shadow-xl transition-all">
               <Balance />
@@ -58,7 +55,7 @@ const TrackerPage = () => {
             </div>
           </div>
 
-          {/* Charts section - interactive, explore your spending */}
+          {/* Charts */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 hover:shadow-xl transition-all">
               <ExpenseChart />
@@ -68,19 +65,18 @@ const TrackerPage = () => {
             </div>
           </div>
 
-          {/* Filter bar - explore data dynamically */}
+          {/* Filter */}
           <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 hover:shadow-xl transition-all">
             <FilterBar />
           </div>
 
-          {/* Transaction list - scrollable, sleek look */}
+          {/* Transactions */}
           <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 hover:shadow-xl transition-all max-h-[450px] overflow-y-auto">
             <TransactionList />
           </div>
 
-          {/* Footer - keep it minimal but professional */}
+          {/* Footer */}
           <Footer />
-
         </div>
       </div>
     </GlobalProvider>

@@ -1,46 +1,52 @@
-import { FaMoneyBillWave } from 'react-icons/fa'
+
 import { useState } from 'react'
 
 const Header = () => {
   const [showAbout, setShowAbout] = useState(false)
 
   return (
-    <header className="bg-white rounded-xl shadow-md p-5 space-y-4">
-      {/* Main Title */}
-      <div className="flex justify-between items-center">
-        <h1 className="text-2xl font-bold flex items-center gap-2 text-gray-900">
-          🤑
-          Expense Tracker
+    <header className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 space-y-4">
+      
+      
+      <div className="flex items-center justify-between">
+        <h1 className="text-2xl font-semibold flex items-center gap-3 text-gray-900 dark:text-white">
+          
+          CashoraOne
         </h1>
-      </div>
 
-      {/* About Section Toggle */}
-      <div>
         <button
           onClick={() => setShowAbout(!showAbout)}
-          className="text-sm text-blue-600 hover:underline"
+          className="text-sm text-blue-600 dark:text-blue-400 hover:underline transition"
         >
-          {showAbout ? 'Hide About' : 'About This App'}
+          {showAbout ? 'Hide details' : 'What is this app?'}
         </button>
       </div>
 
-      {/* About Content */}
-      {showAbout && (
-        <div className="mt-3 text-sm text-gray-700 leading-relaxed transition-all duration-300 ease-in-out">
+      {/* About  */}
+      <div
+        className={`overflow-hidden transition-all duration-300 ease-in-out ${
+          showAbout ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
+        }`}
+      >
+        <div className="pt-3 text-sm text-gray-700 dark:text-gray-300 leading-relaxed space-y-3">
           <p>
-            Welcome to <strong>Expense Tracker</strong> — your personal and business finance companion.  
-            Track your income, expenses, savings, and investments with ease.  
-            Perfect for job professionals and business owners who want to manage cash flow, set savings goals, and grow financially.
+            <strong>CashoraOne</strong> is a practical expense and income tracking tool designed
+            to help individuals and small professionals stay in control of their finances.
+            It focuses on clarity, simplicity, and real-world usability.
           </p>
-          <ul className="list-disc list-inside mt-2">
-            <li> Track income & spending in real-time</li>
-            <li> Visualize expenses with charts</li>
-            <li> Set savings & investment goals</li>
-            <li> Filter & view past transactions</li>
+
+          <ul className="list-disc list-inside space-y-1">
+            <li>Record income and expenses with clear categorization</li>
+            <li>Instantly view balance and monthly spending patterns</li>
+            <li>Track savings and financial goals over time</li>
+            <li>Filter and review past transactions efficiently</li>
           </ul>
-          <p className="mt-2 italic">"Manage your money, before it manages you."</p>
+
+          <p className="text-xs italic text-gray-500 dark:text-gray-400">
+            Built for people who want a simple system to understand and improve their money habits.
+          </p>
         </div>
-      )}
+      </div>
     </header>
   )
 }
