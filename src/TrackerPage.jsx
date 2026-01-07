@@ -1,5 +1,6 @@
+import { useState, useEffect, useCallback } from 'react'
 import { GlobalProvider } from './context/GlobalContext'
-import Header from './components/Header'
+import Header from './components/layout/Header'
 import Balance from './components/Balance'
 import IncomeExpenses from './components/IncomeExpenses'
 import TransactionList from './components/TransactionList'
@@ -9,7 +10,9 @@ import ExpenseChart from './components/ExpenseChart'
 import SavingsInvestments from './components/SavingsInvestments'
 import MonthlyTrendChart from './components/MonthlyTrendChart'
 import Footer from './components/Footer'
-import { useState, useEffect } from 'react'
+import Button from './components/ui/Button'
+import Card from './components/ui/Card'
+import Modal from './components/ui/Modal'
 
 const TrackerPage = () => {
   const [darkMode, setDarkMode] = useState(false)
@@ -20,60 +23,56 @@ const TrackerPage = () => {
     document.documentElement.classList.toggle('dark', darkMode)
   }, [darkMode])
 
+  const openModal = useCallback(() => setIsModalOpen(true), [])
+  const closeModal = useCallback(() => setIsModalOpen(false), [])
+
   return (
     <GlobalProvider>
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-500">
-        <div className="max-w-7xl mx-auto px-6 py-8 space-y-8">
-          {/* Header */}
-          <Header darkMode={darkMode} setDarkMode={setDarkMode} />
+      <div className="min-h-screen bg-slate-50 dark:bg-slate-950 transition-colors duration-500">
+        <Header darkMode={darkMode} setDarkMode={setDarkMode} />
+        <div className="max-w-7xl mx-auto px-4 py-6 space-y-6">
 
-          <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-2">
-            Welcome back, {userName} 
+          <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-2">
+            Welcome back, {userName}
           </h2>
 
-          {/* Add Transaction */}
           <div className="flex justify-end">
-            <button
-              onClick={() => setIsModalOpen(true)}
-              className="px-5 py-2 bg-gradient-to-r from-blue-500 to-indigo-600 text-white rounded-lg shadow-lg hover:from-blue-600 hover:to-indigo-700 transition-all duration-300"
-            >
-              + Add Transaction
-            </button>
+            <Button onClick={openModal} size="md">
+              + Add transaction
+            </Button>
           </div>
-          {isModalOpen && <AddTransaction onClose={() => setIsModalOpen(false)} />}
+          <Modal isOpen={isModalOpen} onClose={closeModal} title="Add transaction">
+            <AddTransaction onClose={closeModal} />
+          </Modal>
 
-          {/* Dashboard Cards */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 hover:shadow-xl transition-all">
+            <Card title="Balance" className="col-span-1">
               <Balance />
-            </div>
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 hover:shadow-xl transition-all">
+            </Card>
+            <Card title="Income & expenses" className="col-span-1">
               <IncomeExpenses />
-            </div>
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 hover:shadow-xl transition-all">
+            </Card>
+            <Card title="Savings & investments" className="col-span-1">
               <SavingsInvestments />
-            </div>
+            </Card>
           </div>
 
-          {/* Charts */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 hover:shadow-xl transition-all">
+            <Card title="Expense breakdown">
               <ExpenseChart />
-            </div>
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 hover:shadow-xl transition-all">
+            </Card>
+            <Card title="Monthly trend">
               <MonthlyTrendChart />
-            </div>
+            </Card>
           </div>
 
-          {/* Filter */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 hover:shadow-xl transition-all">
+          <Card title="Filters">
             <FilterBar />
-          </div>
+          </Card>
 
-          {/* Transactions */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 hover:shadow-xl transition-all max-h-[450px] overflow-y-auto">
+          <Card title="Transactions" className="max-h-[450px] overflow-y-auto">
             <TransactionList />
-          </div>
+          </Card>
 
           {/* Footer */}
           <Footer />

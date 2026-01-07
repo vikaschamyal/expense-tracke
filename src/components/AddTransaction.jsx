@@ -2,17 +2,30 @@ import { useState, useContext } from 'react'
 import { GlobalContext } from '../context/GlobalContext'
 import { v4 as uuidv4 } from 'uuid'
 
-const AddTransaction = () => {
+const AddTransaction = ({ onClose }) => {
   const [text, setText] = useState('')
   const [amount, setAmount] = useState('')
   const [category, setCategory] = useState('')
   const [date, setDate] = useState(new Date().toISOString().split('T')[0])
   const [type, setType] = useState('expense')
+  const [error, setError] = useState(null)
 
   const { addTransaction } = useContext(GlobalContext)
 
   const onSubmit = e => {
     e.preventDefault()
+
+    if (!text.trim()) {
+      setError('Please add a short description.')
+      return
+    }
+
+    if (!amount || Number.isNaN(Number(amount)) || Number(amount) <= 0) {
+      setError('Please enter a valid amount greater than 0.')
+      return
+    }
+
+    setError(null)
 
     const newTransaction = {
       id: uuidv4(),
@@ -28,14 +41,20 @@ const AddTransaction = () => {
     setAmount('')
     setCategory('')
     setDate(new Date().toISOString().split('T')[0])
+    onClose?.()
   }
 
   return (
-    <div  id="add-transaction" className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8 ">
-      <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 text-center">
-        Add New Transaction
+    <div id="add-transaction" className="space-y-4">
+      <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+        Add new transaction
       </h3>
       <form onSubmit={onSubmit} className="space-y-5">
+        {error && (
+          <p className="text-sm text-red-600 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 px-3 py-2 rounded">
+            {error}
+          </p>
+        )}
         
         {/* Text */}
         <div>
