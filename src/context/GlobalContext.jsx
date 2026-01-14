@@ -87,7 +87,7 @@ export const GlobalProvider = ({ children }) => {
       return acc
     }, {})
 
-  // New: Detect salary transaction (case-insensitive "salary")
+  // New: Detect salary transaction
   const salaryTransaction = state.transactions.find(t => 
     t.text.toLowerCase().includes('salary') && t.amount > 0
   )

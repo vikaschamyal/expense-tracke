@@ -24,6 +24,12 @@ function HomeLoan() {
         <p className="text-sm text-gray-600 dark:text-gray-400">
           Calculate your monthly EMI and total repayment for a home loan.
         </p>
+        <br />
+        <div className="rounded-xl bg-gray-50 p-4 text-xs text-gray-600">
+                  <strong>How EMI works:</strong> Your EMI remains fixed every month,
+                  but the interest portion is higher in early years and reduces over time
+                  as principal repayment increases.
+                </div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -113,6 +119,8 @@ function HomeLoan() {
               <div className="mt-4 p-3 bg-gray-50 dark:bg-gray-800 rounded text-xs text-gray-600 dark:text-gray-400">
                 <strong>EMI</strong> (Equated Monthly Installment) is the fixed amount you pay each
                 month towards your loan. It includes both principal and interest components.
+
+                
               </div>
             </div>
           ) : (

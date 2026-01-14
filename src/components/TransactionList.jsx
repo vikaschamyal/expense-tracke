@@ -1,23 +1,38 @@
-import { useContext } from 'react'
-import { GlobalContext } from '../context/GlobalContext'
-import TransactionItem from './TransactionItem'
+import { useContext } from "react";
+import { GlobalContext } from "../context/GlobalContext";
+import TransactionItem from "./TransactionItem";
 
 const TransactionList = () => {
-  const { transactions, deleteTransaction } = useContext(GlobalContext)
+  const { transactions, deleteTransaction } = useContext(GlobalContext);
 
   return (
-    <div className="bg-white dark:bg-gray-800 shadow-lg rounded-xl p-6 max-w-3xl mx-auto sm:p-8">
-      <h3 className="text-2xl font-semibold mb-6 text-gray-900 dark:text-gray-100 text-center sm:text-left">
-        Transactions
-      </h3>
+    <div className="relative bg-white dark:bg-slate-900 rounded-3xl shadow-xl px-6 py-7 sm:px-8">
 
+      {/* HEADER */}
+      <div className="mb-6 flex items-center justify-between">
+        <div>
+          <h3 className="text-xl font-extrabold text-gray-900 dark:text-gray-100">
+            Transactions
+          </h3>
+          <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
+            Recent income and expense activity
+          </p>
+        </div>
+      </div>
+
+      {/* CONTENT */}
       {transactions.length === 0 ? (
-        <p className="text-center text-gray-500 dark:text-gray-400 text-lg py-8">
-          No transactions yet
-        </p>
+        <div className="flex flex-col items-center justify-center py-16 text-center">
+          <p className="text-base font-medium text-gray-600 dark:text-gray-400">
+            No transactions yet
+          </p>
+          <p className="mt-1 text-sm text-gray-400">
+            Add your first transaction to get started
+          </p>
+        </div>
       ) : (
-        <ul className="divide-y divide-gray-200 dark:divide-gray-700">
-          {transactions.map(transaction => (
+        <ul className="space-y-2">
+          {transactions.map((transaction) => (
             <TransactionItem
               key={transaction.id}
               transaction={transaction}
@@ -27,7 +42,7 @@ const TransactionList = () => {
         </ul>
       )}
     </div>
-  )
-}
+  );
+};
 
-export default TransactionList
+export default TransactionList;

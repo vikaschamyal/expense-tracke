@@ -1,43 +1,76 @@
-import { FaTrash } from 'react-icons/fa'
-import { formatDate } from '../utils/formatters'
+import { FaTrash } from "react-icons/fa";
+import { formatDate } from "../utils/formatters";
+
+/* Format amount professionally */
+const formatAmount = (amount) => {
+  const abs = Math.abs(amount);
+
+  if (abs >= 1_000_000) return `₹${(abs / 1_000_000).toFixed(1)}M`;
+  if (abs >= 1_000) return `₹${(abs / 1_000).toFixed(1)}K`;
+
+  return `₹${abs.toLocaleString()}`;
+};
 
 const TransactionItem = ({ transaction, onDelete }) => {
-  const sign = transaction.amount < 0 ? '-' : '+'
-  const amountColor =
-    transaction.amount < 0 ? 'text-red-500' : 'text-green-500'
+  const isExpense = transaction.amount < 0;
 
   return (
-    <li className="flex justify-between items-center py-3 border-b border-gray-200 dark:border-gray-700">
-      {/* Transaction Info */}
-      <div className="flex flex-col">
-        <span className="font-medium text-gray-900 dark:text-gray-100">
+    <li
+      className="
+        group flex items-center justify-between gap-4
+        rounded-xl px-4 py-3
+        bg-white dark:bg-slate-900
+        hover:bg-slate-50 dark:hover:bg-slate-800
+        transition-colors
+      "
+    >
+      {/* LEFT: INFO */}
+      <div className="min-w-0">
+        <p className="font-semibold text-gray-900 dark:text-gray-100 truncate">
           {transaction.text}
-        </span>
-        <div className="flex items-center text-xs text-gray-500 dark:text-gray-400 space-x-2">
+        </p>
+
+        <div className="mt-1 flex flex-wrap items-center gap-2 text-xs text-gray-500 dark:text-gray-400">
           <span>{formatDate(transaction.date)}</span>
+
           {transaction.category && (
-            <span className="px-2 py-0.5 bg-gray-100 dark:bg-gray-700 rounded-full text-gray-600 dark:text-gray-300">
+            <span className="rounded-full bg-slate-100 dark:bg-slate-700 px-2 py-0.5 font-medium text-slate-700 dark:text-slate-300">
               {transaction.category}
             </span>
           )}
         </div>
       </div>
 
-      {/* Amount + Delete */}
-      <div className="flex items-center space-x-3">
-        <span className={`font-semibold ${amountColor}`}>
-          {sign}${Math.abs(transaction.amount)}
+      {/* RIGHT: AMOUNT + ACTION */}
+      <div className="flex items-center gap-4">
+
+        {/* AMOUNT */}
+        <span
+          className={`text-sm font-extrabold ${
+            isExpense
+              ? "text-red-500"
+              : "text-green-500"
+          }`}
+        >
+          {isExpense ? "-" : "+"}
+          {formatAmount(transaction.amount)}
         </span>
+
+        {/* DELETE (on hover) */}
         <button
           onClick={() => onDelete(transaction.id)}
-          className="text-red-500 hover:text-red-700 transition-colors"
           aria-label="Delete transaction"
+          className="
+            opacity-0 group-hover:opacity-100
+            text-slate-400 hover:text-red-500
+            transition
+          "
         >
-          <FaTrash />
+          <FaTrash size={14} />
         </button>
       </div>
     </li>
-  )
-}
+  );
+};
 
-export default TransactionItem
+export default TransactionItem;

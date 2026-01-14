@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
-import WelcomePage from './pages/WelcomePage'
+
 import ProfileSetup from './pages/ProfileSetup'
 import TrackerPage from './TrackerPage'
 import OnboardingComplete from './pages/OnboardingComplete'
@@ -17,7 +17,7 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<WelcomePage />} />
+      <Route path="/" element={<TrackerPage />} />
         <Route path="/faq" element={<FAQ />} />
         <Route path="/setup" element={<ProfileSetup />} />
         <Route path="/onboarding-complete" element={<OnboardingComplete />} />

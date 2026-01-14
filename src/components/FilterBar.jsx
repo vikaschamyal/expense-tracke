@@ -1,138 +1,165 @@
-import { useContext, useState } from 'react'
-import { GlobalContext } from '../context/GlobalContext'
-import { FaSearch, FaFilter, FaTimes } from 'react-icons/fa'
-import { exportToCSV, exportToJSON } from '../utils/exporters'
+import { useContext, useState } from "react";
+import { GlobalContext } from "../context/GlobalContext";
+import { exportToCSV, exportToJSON } from "../utils/exporters";
 
 const FilterBar = () => {
-  const { updateFilters, clearFilters, filters, allTransactions } = useContext(GlobalContext)
-  const [showAdvanced, setShowAdvanced] = useState(false)
+  const { updateFilters, clearFilters, filters, allTransactions } =
+    useContext(GlobalContext);
 
-  const categories = [...new Set(allTransactions.map(t => t.category).filter(Boolean))]
-  const types = ['income', 'expense']
-  const userName = localStorage.getItem('userName') || 'Guest'
+  const [showAdvanced, setShowAdvanced] = useState(false);
 
-  const handleChange = e => {
-    updateFilters({ [e.target.name]: e.target.value })
-  }
+  const categories = [
+    ...new Set(allTransactions.map((t) => t.category).filter(Boolean)),
+  ];
+
+  const userName = localStorage.getItem("userName") || "User";
+
+  const handleChange = (e) => {
+    updateFilters({ [e.target.name]: e.target.value });
+  };
+
+  const hasActiveFilters = Object.keys(filters).some(
+    (key) => filters[key] && key !== "text"
+  );
 
   return (
-    <div className="bg-white rounded-xl shadow-lg p-6 max-w-4xl mx-auto space-y-5">
-      {/* Top Row */}
-      <div className="flex flex-wrap gap-3 items-center">
-        {/* Search Box */}
-        <div className="relative flex-1 min-w-[200px]">
-          <FaSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+    <div className="relative bg-slate-900 rounded-3xl shadow-xl p-6 text-white">
+
+      {/* TOP TOOLBAR */}
+      <div className="flex flex-col lg:flex-row gap-4 lg:items-center lg:justify-between">
+
+        {/* SEARCH */}
+        <div className="flex-1">
           <input
             type="text"
             name="text"
             value={filters.text}
             onChange={handleChange}
-            placeholder="Search transactions..."
-            className="w-full pl-10 pr-3 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500"
+            placeholder="Search transactions"
+            className="w-full rounded-xl border border-slate-700 bg-slate-800 px-4 py-3 text-sm text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-600"
           />
         </div>
 
-        {/* Toggle Advanced Filters */}
-        <button
-          type="button"
-          onClick={() => setShowAdvanced(!showAdvanced)}
-          className="flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white transition duration-200"
-        >
-          <FaFilter /> {showAdvanced ? 'Hide Filters' : 'More Filters'}
-        </button>
+        {/* ACTIONS */}
+        <div className="flex flex-wrap items-center gap-3">
 
-        {/* Clear Button */}
-        {Object.keys(filters).some(key => filters[key] && key !== 'text') && (
           <button
-            type="button"
-            onClick={clearFilters}
-            className="flex items-center gap-2 px-4 py-2 rounded-lg bg-red-600 hover:bg-red-700 text-white transition duration-200"
+            onClick={() => setShowAdvanced((prev) => !prev)}
+            className="px-5 py-3 rounded-xl text-sm font-semibold border border-slate-700 text-white hover:bg-slate-800 transition"
           >
-            <FaTimes /> Clear
+            {showAdvanced ? "Hide filters" : "Filters"}
           </button>
-        )}
+
+          {hasActiveFilters && (
+            <button
+              onClick={clearFilters}
+              className="px-5 py-3 rounded-xl text-sm font-semibold text-red-400 hover:bg-red-900/30 transition"
+            >
+              Clear
+            </button>
+          )}
+
+          {/* EXPORT GROUP */}
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() =>
+                exportToCSV(allTransactions, {
+                  fileName: "transactions",
+                  userName,
+                })
+              }
+              className="px-5 py-3 rounded-xl text-sm font-semibold bg-blue-600 text-white hover:bg-blue-700 transition"
+            >
+              Export CSV
+            </button>
+
+            <button
+              onClick={() =>
+                exportToJSON(allTransactions, {
+                  fileName: "transactions",
+                  userName,
+                })
+              }
+              className="px-5 py-3 rounded-xl text-sm font-semibold border border-slate-700 text-white hover:bg-slate-800 transition"
+            >
+              JSON
+            </button>
+          </div>
+        </div>
       </div>
 
-      {/* Advanced Filters */}
+      {/* ADVANCED FILTERS */}
       {showAdvanced && (
-        <div className="grid md:grid-cols-4 sm:grid-cols-2 grid-cols-1 gap-4">
-          {/* Category */}
+        <div className="mt-6 rounded-2xl bg-slate-800 p-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+
+          {/* CATEGORY */}
           <div>
-            <label className="block text-gray-700 font-semibold mb-1">Category</label>
+            <label className="block text-xs font-semibold text-gray-300 mb-1">
+              Category
+            </label>
             <select
               name="category"
               value={filters.category}
               onChange={handleChange}
-              className="w-full p-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500"
+              className="w-full rounded-lg border border-slate-700 bg-slate-900 px-3 py-2 text-sm text-white"
             >
-              <option value="all">All Categories</option>
-              {categories.map(category => (
-                <option key={category} value={category}>{category}</option>
+              <option value="all">All categories</option>
+              {categories.map((category) => (
+                <option key={category} value={category}>
+                  {category}
+                </option>
               ))}
             </select>
           </div>
 
-          {/* Type */}
+          {/* TYPE */}
           <div>
-            <label className="block text-gray-700 font-semibold mb-1">Type</label>
+            <label className="block text-xs font-semibold text-gray-300 mb-1">
+              Type
+            </label>
             <select
               name="type"
               value={filters.type}
               onChange={handleChange}
-              className="w-full p-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500"
+              className="w-full rounded-lg border border-slate-700 bg-slate-900 px-3 py-2 text-sm text-white"
             >
-              <option value="all">All Types</option>
-              {types.map(type => (
-                <option key={type} value={type}>{type.charAt(0).toUpperCase() + type.slice(1)}</option>
-              ))}
+              <option value="all">All types</option>
+              <option value="income">Income</option>
+              <option value="expense">Expense</option>
             </select>
           </div>
 
-          {/* Start Date */}
+          {/* START DATE */}
           <div>
-            <label className="block text-gray-700 font-semibold mb-1">Start Date</label>
+            <label className="block text-xs font-semibold text-gray-300 mb-1">
+              Start date
+            </label>
             <input
               type="date"
               name="startDate"
-              value={filters.startDate || ''}
+              value={filters.startDate || ""}
               onChange={handleChange}
-              className="w-full p-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500"
+              className="w-full rounded-lg border border-slate-700 bg-slate-900 px-3 py-2 text-sm text-white"
             />
           </div>
 
-          {/* End Date */}
+          {/* END DATE */}
           <div>
-            <label className="block text-gray-700 font-semibold mb-1">End Date</label>
+            <label className="block text-xs font-semibold text-gray-300 mb-1">
+              End date
+            </label>
             <input
               type="date"
               name="endDate"
-              value={filters.endDate || ''}
+              value={filters.endDate || ""}
               onChange={handleChange}
-              className="w-full p-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500"
+              className="w-full rounded-lg border border-slate-700 bg-slate-900 px-3 py-2 text-sm text-white"
             />
           </div>
         </div>
       )}
-
-      {/* Export Buttons */}
-      <div className="flex flex-wrap gap-4 justify-center md:justify-start">
-        <button
-          type="button"
-          onClick={() => exportToCSV(allTransactions, { fileName: 'transactions', userName })}
-          className="px-5 py-2 rounded-lg bg-gray-200 hover:bg-gray-300 text-gray-900 transition"
-        >
-          Export to CSV
-        </button>
-        <button
-          type="button"
-          onClick={() => exportToJSON(allTransactions, { fileName: 'transactions', userName })}
-          className="px-5 py-2 rounded-lg bg-gray-200 hover:bg-gray-300 text-gray-900 transition"
-        >
-          Export to JSON
-        </button>
-      </div>
     </div>
-  )
-}
+  );
+};
 
-export default FilterBar
+export default FilterBar;

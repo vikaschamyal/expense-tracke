@@ -1,112 +1,112 @@
-import { useState, useRef, useEffect } from 'react'
-import { getBotReply } from './ChatBotLogic'
+import { useState, useRef, useEffect } from "react";
+import { getBotReply } from "./ChatBotLogic";
 
-const quickOptions = [
-  { label: 'Expenses', value: 'How do expenses work?' },
-  { label: 'Income', value: 'How can I track income?' },
-  { label: 'Loans', value: 'Explain loan features' },
-  { label: 'Reports', value: 'How reports are generated?' },
-  { label: 'App Usage', value: 'How to use CashoraOne?' },
-]
+const QUICK_ACTIONS = [
+  "Expenses",
+  "Income",
+  "Loans",
+  "Reports",
+  "How to use Ledgerly",
+];
 
 const ChatBotWidget = () => {
-  const [open, setOpen] = useState(false)
+  const [open, setOpen] = useState(false);
   const [messages, setMessages] = useState([
-    { sender: 'bot', text: 'Hi 👋 What are you looking for?' }
-  ])
-  const [input, setInput] = useState('')
-  const [showOptions, setShowOptions] = useState(true)
+    { from: "bot", text: "Hey! How can I help you today?" },
+  ]);
+  const [input, setInput] = useState("");
 
-  const messagesEndRef = useRef(null)
+  const endRef = useRef(null);
 
-  // Auto scroll to bottom on new message
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
-  }, [messages])
+    endRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
 
-  const sendMessage = (text) => {
-    if (!text.trim()) return
+  const send = (text) => {
+    if (!text.trim()) return;
 
-    const userMessage = { sender: 'user', text }
-    const botReply = { sender: 'bot', text: getBotReply(text) }
+    setMessages((prev) => [
+      ...prev,
+      { from: "user", text },
+      { from: "bot", text: getBotReply(text) },
+    ]);
 
-    setMessages(prev => [...prev, userMessage, botReply])
-    setShowOptions(false)
-    setInput('')
-  }
+    setInput("");
+  };
 
   return (
     <>
-      {/* Floating Button */}
+      {/* FLOATING BUTTON */}
       <button
-        onClick={() => setOpen(true)}
-        className="fixed bottom-6 right-6 bg-blue-600 text-white w-12 h-12 rounded-full flex items-center justify-center shadow-lg hover:bg-blue-700 transition z-50"
+        onClick={() => setOpen((v) => !v)}
+        className="fixed bottom-6 right-6 z-50 w-11 h-11 rounded-full bg-blue-600 text-white shadow-lg hover:bg-blue-700 transition flex items-center justify-center"
+        aria-label="Open help"
       >
-        💬
+        ?
       </button>
 
-      {/* Chat Window */}
+      {/* CHAT WINDOW */}
       {open && (
-        <div className="fixed bottom-20 right-6 w-80 max-h-[520px] bg-white rounded-2xl shadow-2xl flex flex-col overflow-hidden z-50">
+        <div className="fixed bottom-20 right-6 z-50 w-72 rounded-2xl bg-white shadow-2xl overflow-hidden flex flex-col border">
 
-          {/* Header */}
+          {/* HEADER */}
           <div className="flex items-center justify-between px-4 py-3 border-b">
-            <span className="text-sm font-semibold text-gray-800">
-              Cashora Assistant
+            <span className="text-sm font-semibold text-gray-900">
+              Ledgerly Assistant
             </span>
             <button
               onClick={() => setOpen(false)}
               className="text-gray-400 hover:text-gray-600 text-lg"
             >
-              ✕
+              ×
             </button>
           </div>
 
-          {/* Messages */}
-          <div className="flex-1 px-3 py-2 space-y-2 overflow-y-auto text-sm">
-            {messages.map((msg, index) => (
+          {/* MESSAGES */}
+          <div className="flex-1 px-3 py-3 space-y-2 overflow-y-auto text-sm">
+            {messages.map((m, i) => (
               <div
-                key={index}
-                className={`px-3 py-2 rounded-xl max-w-[85%] ${
-                  msg.sender === 'user'
-                    ? 'ml-auto bg-blue-50 text-gray-900'
-                    : 'bg-gray-100 text-gray-700'
+                key={i}
+                className={`max-w-[85%] rounded-xl px-3 py-2 ${
+                  m.from === "user"
+                    ? "ml-auto bg-blue-600 text-white"
+                    : "bg-gray-100 text-gray-800"
                 }`}
               >
-                {msg.text}
+                {m.text}
               </div>
             ))}
 
-            {/* Quick Options */}
-            {showOptions && (
-              <div className="mt-2 space-y-2">
-                {quickOptions.map(option => (
+            {/* QUICK ACTIONS (only first message) */}
+            {messages.length === 1 && (
+              <div className="pt-2 space-y-1">
+                {QUICK_ACTIONS.map((q) => (
                   <button
-                    key={option.label}
-                    onClick={() => sendMessage(option.value)}
-                    className="w-full text-left px-3 py-2 text-sm border rounded-xl hover:bg-gray-50 transition"
+                    key={q}
+                    onClick={() => send(q)}
+                    className="w-full text-left px-3 py-2 rounded-lg border text-xs text-gray-700 hover:bg-gray-50 transition"
                   >
-                    {option.label}
+                    {q}
                   </button>
                 ))}
               </div>
             )}
 
-            <div ref={messagesEndRef} />
+            <div ref={endRef} />
           </div>
 
-          {/* Input */}
+          {/* INPUT */}
           <div className="border-t px-2 py-2 flex gap-2">
             <input
               value={input}
-              onChange={e => setInput(e.target.value)}
-              placeholder="Type your question…"
-              className="flex-1 border rounded-xl px-3 py-2 text-sm focus:outline-none"
-              onKeyDown={(e) => e.key === 'Enter' && sendMessage(input)}
+              onChange={(e) => setInput(e.target.value)}
+              onKeyDown={(e) => e.key === "Enter" && send(input)}
+              placeholder="Ask something…"
+              className="flex-1 rounded-lg border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
             <button
-              onClick={() => sendMessage(input)}
-              className="text-blue-600 text-sm font-medium px-2"
+              onClick={() => send(input)}
+              className="text-blue-600 font-semibold text-sm px-2"
             >
               Send
             </button>
@@ -114,7 +114,7 @@ const ChatBotWidget = () => {
         </div>
       )}
     </>
-  )
-}
+  );
+};
 
-export default ChatBotWidget
+export default ChatBotWidget;
